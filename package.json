@@ -1,7 +1,10 @@
 {
   "name": "github-secret-manager",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "repository": "git@github.com:bryxli/github-secret-manager.git",
   "author": "bryxli <bryanzero765@gmail.com>",
   "license": "MIT",
@@ -9,7 +12,8 @@
     "prepare": "husky",
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node-dev --respawn src/index.ts"
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "publish": "publish"
   },
   "dependencies": {
     "@octokit/core": "^7.0.2",
