@@ -52,7 +52,7 @@ class SecretManager {
     const publicKey = await this.getPublicKey(owner, repo);
     const encryptedValue = await this.encrypt(publicKey.data.key, secretValue);
 
-    await this.octokit.request(
+    return await this.octokit.request(
       "PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}",
       {
         owner: owner,
@@ -87,7 +87,7 @@ class SecretManager {
     const publicKey = await this.getDependabotPublicKey(owner, repo);
     const encryptedValue = await this.encrypt(publicKey.data.key, secretValue);
 
-    await this.octokit.request(
+    return await this.octokit.request(
       "PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}",
       {
         owner,
@@ -127,7 +127,7 @@ class SecretManager {
 
     await this.createEnvironment(owner, repo, environmentName);
 
-    await this.octokit.request(
+    return await this.octokit.request(
       "PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}",
       {
         owner,
