@@ -88,7 +88,7 @@ class SecretManager {
     const encryptedValue = await this.#encrypt(publicKey.data.key, secretValue);
 
     return await this.#octokit.request(
-      "PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}",
+      "PUT /repos/{owner}/{repo}/dependabot/secrets/{secret_name}",
       {
         owner,
         repo,
@@ -121,17 +121,20 @@ class SecretManager {
     secretValue: string,
     environmentName: string,
   ) {
-    const repoId = (await this.#getRepo(owner, repo)).data.id;
-    const publicKey = await this.#getEnvPublicKey(repoId, environmentName);
-    const encryptedValue = await this.#encrypt(publicKey.data.key, secretValue);
-
     await this.#createEnvironment(owner, repo, environmentName);
+
+    const repositoryId = (await this.#getRepo(owner, repo)).data.id;
+    const publicKey = await this.#getEnvPublicKey(
+      repositoryId,
+      environmentName,
+    );
+    const encryptedValue = await this.#encrypt(publicKey.data.key, secretValue);
 
     return await this.#octokit.request(
       "PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}",
       {
-        owner,
-        repo,
+        repository_id: repositoryId,
+        environment_name: environmentName,
         secret_name: secretName,
         encrypted_value: encryptedValue,
         key_id: publicKey.data.key_id,

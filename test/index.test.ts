@@ -28,6 +28,11 @@ vi.mock("@octokit/core", () => {
           return { status: 201 };
         }
         if (
+          route === "PUT /repos/{owner}/{repo}/dependabot/secrets/{secret_name}"
+        ) {
+          return { status: 201 };
+        }
+        if (
           route ===
           "PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}"
         ) {
