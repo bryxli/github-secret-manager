@@ -8,6 +8,7 @@
   "repository": "git@github.com:bryxli/github-secret-manager.git",
   "author": "bryxli <bryanzero765@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "prepare": "husky",
     "build": "tsc",
