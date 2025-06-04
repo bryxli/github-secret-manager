@@ -22,7 +22,7 @@ import sodium from "libsodium-wrappers";
  * All methods require a GitHub personal access token with appropriate permissions.
  */
 class SecretManager {
-  private octokit: Octokit;
+  private readonly octokit: Octokit;
 
   /**
    * Create a new SecretManager instance.
