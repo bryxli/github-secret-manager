@@ -22,14 +22,14 @@ import sodium from "libsodium-wrappers";
  * All methods require a GitHub personal access token with appropriate permissions.
  */
 class SecretManager {
-  private readonly octokit: Octokit;
+  readonly #octokit: Octokit;
 
   /**
    * Create a new SecretManager instance.
    * @param pat GitHub Personal Access Token
    */
   constructor(pat: string) {
-    this.octokit = new Octokit({ auth: pat });
+    this.#octokit = new Octokit({ auth: pat });
   }
 
   /**
@@ -49,10 +49,10 @@ class SecretManager {
     secretName: string,
     secretValue: string,
   ) {
-    const publicKey = await this.getPublicKey(owner, repo);
-    const encryptedValue = await this.encrypt(publicKey.data.key, secretValue);
+    const publicKey = await this.#getPublicKey(owner, repo);
+    const encryptedValue = await this.#encrypt(publicKey.data.key, secretValue);
 
-    return await this.octokit.request(
+    return await this.#octokit.request(
       "PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}",
       {
         owner: owner,
@@ -84,10 +84,10 @@ class SecretManager {
     secretName: string,
     secretValue: string,
   ) {
-    const publicKey = await this.getDependabotPublicKey(owner, repo);
-    const encryptedValue = await this.encrypt(publicKey.data.key, secretValue);
+    const publicKey = await this.#getDependabotPublicKey(owner, repo);
+    const encryptedValue = await this.#encrypt(publicKey.data.key, secretValue);
 
-    return await this.octokit.request(
+    return await this.#octokit.request(
       "PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}",
       {
         owner,
@@ -121,13 +121,13 @@ class SecretManager {
     secretValue: string,
     environmentName: string,
   ) {
-    const repoId = (await this.getRepo(owner, repo)).data.id;
-    const publicKey = await this.getEnvPublicKey(repoId, environmentName);
-    const encryptedValue = await this.encrypt(publicKey.data.key, secretValue);
+    const repoId = (await this.#getRepo(owner, repo)).data.id;
+    const publicKey = await this.#getEnvPublicKey(repoId, environmentName);
+    const encryptedValue = await this.#encrypt(publicKey.data.key, secretValue);
 
-    await this.createEnvironment(owner, repo, environmentName);
+    await this.#createEnvironment(owner, repo, environmentName);
 
-    return await this.octokit.request(
+    return await this.#octokit.request(
       "PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}",
       {
         owner,
@@ -142,8 +142,8 @@ class SecretManager {
     );
   }
 
-  private async getRepo(owner: string, repo: string) {
-    return await this.octokit.request("GET /repos/{owner}/{repo}", {
+  async #getRepo(owner: string, repo: string) {
+    return await this.#octokit.request("GET /repos/{owner}/{repo}", {
       owner: owner,
       repo: repo,
       headers: {
@@ -152,8 +152,8 @@ class SecretManager {
     });
   }
 
-  private async getPublicKey(owner: string, repo: string) {
-    return await this.octokit.request(
+  async #getPublicKey(owner: string, repo: string) {
+    return await this.#octokit.request(
       "GET /repos/{owner}/{repo}/actions/secrets/public-key",
       {
         owner: owner,
@@ -165,8 +165,8 @@ class SecretManager {
     );
   }
 
-  private async getDependabotPublicKey(owner: string, repo: string) {
-    return await this.octokit.request(
+  async #getDependabotPublicKey(owner: string, repo: string) {
+    return await this.#octokit.request(
       "GET /repos/{owner}/{repo}/dependabot/secrets/public-key",
       {
         owner: owner,
@@ -178,8 +178,8 @@ class SecretManager {
     );
   }
 
-  private async getEnvPublicKey(repoId: number, environmentName: string) {
-    return await this.octokit.request(
+  async #getEnvPublicKey(repoId: number, environmentName: string) {
+    return await this.#octokit.request(
       "GET /repositories/{repository_id}/environments/{environment_name}/secrets/public-key",
       {
         repository_id: repoId,
@@ -191,12 +191,12 @@ class SecretManager {
     );
   }
 
-  private async createEnvironment(
+  async #createEnvironment(
     owner: string,
     repo: string,
     environmentName: string,
   ) {
-    await this.octokit.request(
+    await this.#octokit.request(
       "PUT /repos/{owner}/{repo}/environments/{environment_name}",
       {
         owner,
@@ -209,7 +209,7 @@ class SecretManager {
     );
   }
 
-  private async encrypt(key: string, secret: string): Promise<string> {
+  async #encrypt(key: string, secret: string): Promise<string> {
     await sodium.ready;
     const binkey = sodium.from_base64(key, sodium.base64_variants.ORIGINAL);
     const binsec = sodium.from_string(secret);
