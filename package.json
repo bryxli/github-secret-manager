@@ -1,6 +1,6 @@
 {
   "name": "github-secret-manager",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "files": [
     "dist"
@@ -14,8 +14,7 @@
     "build": "tsc",
     "test": "vitest --coverage",
     "start": "node dist/index.js",
-    "dev": "ts-node-dev --respawn src/index.ts",
-    "publish": "publish"
+    "dev": "ts-node-dev --respawn src/index.ts"
   },
   "dependencies": {
     "@octokit/core": "^7.0.2",
