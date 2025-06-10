@@ -4,7 +4,7 @@ Thank you for your interest in contributing! Whether you're reporting a bug or s
 
 ## 📋 Creating an Issue
 
-If you've found a bug or have a feature request, please [open an issue](https://github.com/bryxli/github-secret-manager/issues/new/choose) using one of our templates.
+If you've found a bug or have a feature request, please [open an issue](https://github.com/bryxli/github-secret-manager/issues/new/choose) using one of the templates.
 
 ## 🔧 Opening a Pull Request
 
@@ -12,7 +12,7 @@ Want to submit a fix or feature? Awesome!
 
 1. Make sure there’s an [open issue](https://github.com/bryxli/github-secret-manager/issues) that your PR addresses.
 2. Fork the repository and create your branch from `main`.
-3. Submit your pull request using [our PR template](https://github.com/bryxli/github-secret-manager/tree/main/.github/pull_request_template.md).
+3. Submit your pull request using [the PR template](https://github.com/bryxli/github-secret-manager/compare).
 4. In your PR description, **link the issue number** using `Closes #issue-number` so it’s automatically closed when the PR is merged.
 
 ## ✅ Checklist Before Submitting
